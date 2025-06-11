@@ -1302,8 +1302,8 @@ MonoBehaviour:
   cameraPresets:
   - position: {x: 0, y: 3, z: -8}
     rotation: {x: 0.034899496, y: 0, z: 0, w: 0.99939084}
-  - position: {x: 30, y: 10, z: 74}
-    rotation: {x: 0.09584575, y: 0, z: 0, w: 0.9953962}
+  - position: {x: 31, y: 8, z: 60}
+    rotation: {x: 0.104528464, y: 0, z: 0, w: 0.9945219}
 --- !u!1 &331596562
 GameObject:
   m_ObjectHideFlags: 0
@@ -6925,8 +6925,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.0040808, y: 18.587584, z: 70.88466}
-  m_Center: {x: 0.0010080338, y: 1.7183352, z: -27.252975}
+  m_Size: {x: 1.0040808, y: 18.587584, z: 63.142662}
+  m_Center: {x: 0.0010080338, y: 1.7183352, z: -23.381962}
 --- !u!4 &1358705442
 Transform:
   m_ObjectHideFlags: 0
@@ -7592,7 +7592,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1100576062}
   cameraTransform: {fileID: 330585546}
-  rotationSpeed: -20
+  rotationSpeed: -7
 --- !u!4 &1471325352
 Transform:
   m_ObjectHideFlags: 0
