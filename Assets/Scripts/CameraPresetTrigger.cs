@@ -3,18 +3,34 @@ using UnityEngine;
 public class CameraPresetTrigger : MonoBehaviour
 {
     [SerializeField] private int presetIndex = 0; // Preset to switch to
-    private bool isTriggered = false;                // Flag to control if it's active
+    [SerializeField] private bool enableFacePlayer = true; // Toggle in inspector
+
+    private bool isTriggered = false;
+    private PlayerFaceCamera faceScript; // Cached reference
+
+    private void Start()
+    {
+        faceScript = GameObject.FindFirstObjectByType<PlayerFaceCamera>();
+    }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player") && !isTriggered)
         {
+            // Switch the camera preset
             var cameraScript = Camera.main.GetComponent<PlayerFollowCamera>();
             if (cameraScript != null)
             {
                 cameraScript.SwitchToPreset(presetIndex);
-                isTriggered = true; // Prevent re-triggering
             }
+
+            // Make player face the camera if enabled
+            if (enableFacePlayer && faceScript != null)
+            {
+                faceScript.StartFacingCamera();
+            }
+
+            isTriggered = true;
         }
     }
 
@@ -22,19 +38,21 @@ public class CameraPresetTrigger : MonoBehaviour
     {
         if (other.CompareTag("Player") && isTriggered)
         {
+            // Revert camera adjustment
             var cameraScript = Camera.main.GetComponent<PlayerFollowCamera>();
             if (cameraScript != null)
             {
-                cameraScript.ClearAdjustment(); // Revert to default
+                cameraScript.ClearAdjustment();
             }
-            // Optionally, if you want to allow re-trigger later:
+
+            // Stop the player from facing the camera if enabled
+            if (enableFacePlayer && faceScript != null)
+            {
+                faceScript.StopFacingCamera();
+            }
+
+            // Optional: Uncomment if you want to reset trigger for reuse
             // isTriggered = false;
         }
-    }
-
-    // Call this method when you want to manually reset the trigger state
-    public void ResetTrigger()
-    {
-        isTriggered = false;
     }
 }
