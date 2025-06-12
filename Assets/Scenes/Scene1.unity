@@ -1296,13 +1296,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1100576062}
-  followDistance: 9
+  followDistance: 8
   followHeight: 4
   followSpeed: 10
   cameraPresets:
-  - position: {x: 0, y: 4, z: -8}
+  - position: {x: 0, y: 3.5, z: -8}
     rotation: {x: 0.034899496, y: 0, z: 0, w: 0.99939084}
-  - position: {x: 32, y: 8, z: 62}
+  - position: {x: 32, y: 8, z: 65}
     rotation: {x: 0.12186935, y: 0, z: 0, w: 0.99254614}
 --- !u!1 &331596562
 GameObject:
@@ -5150,10 +5150,8 @@ MonoBehaviour:
   rotationSpeed: 100
   runSpeed: 10
   walkSpeed: 4
-  moveSpeed: 0
   currentState: 0
   jumpForce: 4
-  jumph: 0
   animator: {fileID: 1100576067}
 --- !u!54 &1100576065
 Rigidbody:
@@ -7592,7 +7590,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1100576062}
   cameraTransform: {fileID: 330585546}
-  rotationSpeed: -7
+  rotationSpeed: -5
 --- !u!4 &1471325352
 Transform:
   m_ObjectHideFlags: 0
