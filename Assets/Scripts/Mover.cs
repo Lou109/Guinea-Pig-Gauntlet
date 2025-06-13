@@ -29,6 +29,7 @@ public class Mover : MonoBehaviour
         playerSquash = GetComponent<PlayerSquash>();
         animator = GetComponent<Animator>();
         moveSpeed = walkSpeed; // start at walk speed
+        animator.SetBool("isGrounded", true);
     }
 
     void Update()
@@ -67,7 +68,8 @@ public class Mover : MonoBehaviour
             myRigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             isGrounded = false;
             // Trigger jump animation
-            animator.SetTrigger("PlayJump");     
+            animator.SetTrigger("PlayJump");
+            animator.SetBool("isGrounded", false);    
         }
     }
 
