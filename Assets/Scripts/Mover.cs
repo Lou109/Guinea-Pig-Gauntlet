@@ -17,7 +17,7 @@ public class Mover : MonoBehaviour
     bool isGrounded = true;
     bool canJump = true;
     bool hasBeenSquashed = false;
-
+    
     PlayerSquash playerSquash;
 
     [SerializeField] private Animator animator;
@@ -67,8 +67,7 @@ public class Mover : MonoBehaviour
             myRigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             isGrounded = false;
             // Trigger jump animation
-            animator.SetTrigger("PlayJump");
-            animator.SetBool("EndJump", false);
+            animator.SetTrigger("PlayJump");     
         }
     }
 
@@ -78,6 +77,7 @@ public class Mover : MonoBehaviour
         {
             currentState = MovementState.Running;
             moveSpeed = runSpeed;
+
         }
         else
         {
