@@ -10,13 +10,12 @@ public class CameraPreset
 
 public class PlayerFollowCamera : MonoBehaviour
 {
-    [SerializeField] Transform player; // Assign in inspector
+    [SerializeField] private Transform player; // Assign in inspector
     [SerializeField] private float followDistance = 5f;
     [SerializeField] private float followHeight = 2f;
     [SerializeField] private float followSpeed = 10f;
 
-    [SerializeField]
-    private List<CameraPreset> cameraPresets = new List<CameraPreset>();
+    [SerializeField] private List<CameraPreset> cameraPresets = new List<CameraPreset>();
 
     private Vector3 defaultPosition;
     private Quaternion defaultRotation;
@@ -26,24 +25,21 @@ public class PlayerFollowCamera : MonoBehaviour
     private Quaternion adjustmentTargetRotation;
     private float adjustmentTransitionSpeed = 2f;
 
-    void Start()
+    private void Start()
     {
         defaultPosition = transform.position;
         defaultRotation = transform.rotation;
     }
 
-    void LateUpdate()
+    private void LateUpdate()
     {
         if (player == null) return;
 
         if (isAdjusting)
         {
-            // Using same logic but adding check and log
             Vector3 targetPosition = player.position + adjustmentTargetPosition;
             transform.position = Vector3.Lerp(transform.position, targetPosition, adjustmentTransitionSpeed * Time.deltaTime);
             transform.rotation = Quaternion.Slerp(transform.rotation, adjustmentTargetRotation, adjustmentTransitionSpeed * Time.deltaTime);
-
-            Debug.Log($"Target Position: {targetPosition}, Target Rotation: {adjustmentTargetRotation}");
         }
         else
         {
@@ -51,7 +47,7 @@ public class PlayerFollowCamera : MonoBehaviour
             transform.position = Vector3.Lerp(transform.position, desiredPosition, followSpeed * Time.deltaTime);
             transform.LookAt(player.position + Vector3.up * followHeight);
         }
-    }   
+    }
 
     public void SwitchToPreset(int index)
     {
@@ -60,9 +56,6 @@ public class PlayerFollowCamera : MonoBehaviour
             var preset = cameraPresets[index];
             adjustmentTargetPosition = preset.position - player.position; // calculate relative position
             adjustmentTargetRotation = preset.rotation;
-
-            Debug.Log($"Switching to preset {index} with Position: {adjustmentTargetPosition}, Rotation: {adjustmentTargetRotation}");
-
             isAdjusting = true;
         }
         else
@@ -76,4 +69,3 @@ public class PlayerFollowCamera : MonoBehaviour
         isAdjusting = false;
     }
 }
-

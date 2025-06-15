@@ -11,6 +11,7 @@ public class HeartManager : MonoBehaviour
     [SerializeField] private int healthPerHeart = 10;
     [SerializeField] private Transform heartsContainer;
     [SerializeField] private float heartSpacing = 50f;
+    
 
     [SerializeField] private List<RawImage> hearts = new List<RawImage>();
 
@@ -23,7 +24,7 @@ public class HeartManager : MonoBehaviour
 
     void Update()
     {
-        UpdateHearts();
+        UpdateHearts();     
     }
 
     void SpawnHearts()

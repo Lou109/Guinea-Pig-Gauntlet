@@ -2,52 +2,55 @@ using UnityEngine;
 
 public class Mover : MonoBehaviour
 {
-    enum MovementState { Walking, Running }
+    // Movement states
+    private enum MovementState { Walking, Running }
 
-    [SerializeField] float rotationSpeed = 120f; // degrees/sec
-    [SerializeField] float runSpeed = 7f;
-    [SerializeField] float walkSpeed = 4f;
-    float moveSpeed;
+    [SerializeField] private float rotationSpeed = 120f; // degrees/sec
+    [SerializeField] private float runSpeed = 7f;
+    [SerializeField] private float walkSpeed = 4f;
+    private float moveSpeed;
 
-    [SerializeField] private MovementState currentState = MovementState.Walking;
-
-    [SerializeField] float jumpForce = 8f; // Jump force
-    Vector3 jump;
-    Rigidbody myRigidbody;
-    bool isGrounded = true;
-    bool canJump = true;
-    bool hasBeenSquashed = false;
     
-    PlayerSquash playerSquash;
+    [SerializeField] private float jumpForce = 8f; // Jump force
+    private Rigidbody myRigidbody;
+    private bool isGrounded = true;
+    private bool canJump = true;
+    private bool hasBeenSquashed = false;
 
+    private PlayerSquash playerSquash;
     [SerializeField] private Animator animator;
 
-    void Start()
+    private void Start()
     {
-        jump = new Vector3(0f, 0f, 0f);
         myRigidbody = GetComponent<Rigidbody>();
         playerSquash = GetComponent<PlayerSquash>();
-        animator = GetComponent<Animator>();
-        moveSpeed = walkSpeed; // start at walk speed
-        animator.SetBool("isGrounded", true);
+
+        // Initialize movement speed
+        moveSpeed = walkSpeed;
+
+        // Initialize animator parameters
+        if (animator != null)
+        {
+            animator.SetBool("isGrounded", true);
+        }
     }
 
-    void Update()
+    private void Update()
     {
         HandleControls();
         HandleJump();
         HandleRun();
     }
 
-    void HandleControls()
+    private void HandleControls()
     {
-        // Rotation
+        // Handle rotation
         if (Input.GetKey(KeyCode.A))
             transform.Rotate(0, -rotationSpeed * Time.deltaTime, 0);
         if (Input.GetKey(KeyCode.D))
             transform.Rotate(0, rotationSpeed * Time.deltaTime, 0);
 
-        // Movement
+        // Handle movement
         if (Input.GetKey(KeyCode.W))
         {
             transform.position += transform.forward * moveSpeed * Time.deltaTime;
@@ -58,32 +61,37 @@ public class Mover : MonoBehaviour
         }
 
         // Set movement animation parameter
-        animator.SetFloat("Speed", moveSpeed);
+        if (animator != null)
+        {
+            animator.SetFloat("Speed", moveSpeed);
+        }
     }
 
-    void HandleJump()
+    private void HandleJump()
     {
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded && canJump)
         {
             myRigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             isGrounded = false;
-            // Trigger jump animation
-            animator.SetTrigger("PlayJump");
-            animator.SetBool("isGrounded", false);    
+
+            if (animator != null)
+            {
+                animator.SetTrigger("PlayJump");
+                animator.SetBool("isGrounded", false);
+            }
         }
     }
 
-    void HandleRun()
+    private void HandleRun()
     {
         if (Input.GetKey(KeyCode.LeftShift))
         {
-            currentState = MovementState.Running;
+           
             moveSpeed = runSpeed;
-
         }
         else
         {
-            currentState = MovementState.Walking;
+           
             moveSpeed = walkSpeed;
         }
     }
@@ -98,22 +106,21 @@ public class Mover : MonoBehaviour
         canJump = false;
     }
 
-    void OnCollisionEnter(Collision collision)
+    private void OnCollisionEnter(Collision collision)
     {
+        var tag = collision.gameObject.tag;
+
         // Detect landing
-        if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Platform"))
+        if (tag == "Ground" || tag == "Platform")
         {
             isGrounded = true;
-            // No need to set boolean anymore for jump animation
         }
+
         // Detect being squashed
-        if (collision.gameObject.CompareTag("Boulder") && !hasBeenSquashed)
+        if (tag == "Boulder" && !hasBeenSquashed)
         {
             hasBeenSquashed = true;
-            if (playerSquash != null)
-            {
-                playerSquash.Squash();
-            }
+            playerSquash?.Squash();
         }
     }
 }

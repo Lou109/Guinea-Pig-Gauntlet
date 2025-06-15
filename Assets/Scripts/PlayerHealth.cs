@@ -2,9 +2,10 @@ using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour
 {
-    // Adjustable in Inspector
     [SerializeField] private int maxHealth = 100;
     private int currentHealth;
+
+    [SerializeField] private PlayerLives playerLives;  // Assign in inspector
 
     private void Start()
     {
@@ -19,8 +20,16 @@ public class PlayerHealth : MonoBehaviour
         if (currentHealth <= 0)
         {
             currentHealth = 0;
-            Debug.Log("Player died!");
-            // Add death handling here (game over, restart, etc.)
+            Debug.Log("Player health reached zero, triggering lose life.");
+            if (playerLives != null)
+            {
+                playerLives.LoseLife();
+            }
+            else
+            {
+                Debug.LogWarning("PlayerLives reference not assigned in inspector");
+            }
+            currentHealth = maxHealth; // reset for next life
         }
     }
 
